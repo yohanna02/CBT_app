@@ -1,0 +1,35 @@
+@use "abstracts"as *;
+@use "./mixins"as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $sans_serif_font;
+  list-style: none;
+  text-decoration: none;
+  outline: none;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow: hidden;
+
+  .body {
+    background: $primaryBGColor;
+    width: 100vw;
+    max-width: 1700px;
+  }
+}
+
+// .body {
+//   background: $primaryBGColor;
+//   width: 100vw;
+//   max-width: 1700px;
+// }
+
+.container {
+  background: inherit;
+  @include container;
+  height: $height;
+}

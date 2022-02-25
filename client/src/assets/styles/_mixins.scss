@@ -1,0 +1,55 @@
+@use "abstracts" as *;
+
+@mixin container($max_width: 90%, $margin: auto) {
+  width: $max_width;
+  margin: $margin;
+  @content;
+} 
+
+@mixin flex_fun($flexdirection: row, $justifycontent: space-between, $alignitems: center){
+  display: flex;
+  flex-direction: $flexdirection;
+  justify-content: $justifycontent;
+  align-items: $alignitems;
+  @content;
+}
+@mixin media_icon_size($ByVal: 10) {
+  width: calc(300px / $ByVal);
+  @content;
+}
+@mixin btn_base_style($background: $primaryBlue, $color: $primaryBlack, $font-size: $fontsize, $border: none, $borderRadius: $border_radius) {
+  background:$background;
+  color: $color;
+  font-size: $font-size;
+  border: $border;
+  border-radius: $borderRadius;
+  @content;
+}
+@mixin btn_base_style_hover($BGcolor: $primaryBlue, $Amount: 7) {
+  background: darken($color: $BGcolor, $amount: $Amount);
+  @content;
+}
+@mixin btn_base_style_active($BGcolor: $primaryGray, $color: $primaryBlue) {
+  background: $BGcolor;
+  color: $color;
+  @content;
+}
+
+@mixin base_input_style($border: 1px  , $paddingtb: $basePadding, $paddinglr: $basePadding) {
+  border:  $border solid $primaryGray;
+  padding-top: $paddingtb;
+  padding-right: $paddinglr;
+  padding-bottom:$paddingtb;
+  padding-left: $paddinglr;
+  @content;
+}
+@mixin mediaQuery_min_width($width: 699px) {
+  @media screen and (min-width: $width) {
+    @content;
+  }
+}
+@mixin mediaQuery_max_width($width: 999px) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
+}
