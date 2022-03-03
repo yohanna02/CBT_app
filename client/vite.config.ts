@@ -9,7 +9,11 @@ export default defineConfig({
       scss: { 
          // example : additionalData: `@import "./src/design/styles/variables";`
          // dont need include file extend .scss
-         additionalData: `` 
+        additionalData: `
+        @import "./src/assets/styles/abstracts";
+        @import "./src/assets/styles/mixins";
+        @import "./src/assets/styles/resets";
+        ` 
      },
     },
   }

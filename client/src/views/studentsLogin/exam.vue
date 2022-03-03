@@ -20,17 +20,17 @@
                     </label>
 
                     <label for="rads2">
-                        <input type="radio" id="rads2" name="Q2" />
+                        <input type="radio" id="rads2" name="Q1" />
                         <span>Quetion 2</span>
                     </label>
 
                     <label for="rads3">
-                        <input type="radio" id="rads3" name="Q3" />
+                        <input type="radio" id="rads3" name="Q1" />
                         <span>Quetion 3</span>
                     </label>
 
                     <label for="rads4">
-                        <input type="radio" id="rads4" name="Q4" />
+                        <input type="radio" id="rads4" name="Q1" />
                         <span>Quetion 4</span>
                     </label>
                 </section>
@@ -101,9 +101,9 @@
     </div>
 </template>
 <style lang="scss" scoped>
-@use "../../assets/styles/abstracts" as *;
-@use "../../assets/styles/resets" as *;
-@use "../../assets/styles/mixins" as *;
+// @use "../../assets/styles/abstracts" as *;
+// @use "../../assets/styles/resets" as *;
+// @use "../../assets/styles/mixins" as *;
 
 .timer {
     display: flex;
@@ -178,7 +178,8 @@
         @include btn_base_style;
         background: $PrimaryWhite !important;
         position: relative;
-        padding: 1rem 2rem;
+        display: block;
+        padding: 2rem;
         border: 0.5px solid $primaryGray;
         color: $primaryGray;
         &:hover {
@@ -191,6 +192,7 @@
             border: 0.5px solid $primaryGray;
         }
     }
+
     input[type="radio"] {
         @include btn_base_style;
         position: absolute;
@@ -198,8 +200,19 @@
         height: 100%;
         opacity: 0;
         &:checked + span {
-            background: gold;
+            background: $primaryGreen;
         }
+    }
+    span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 2rem;
     }
     @include mediaQuery_max_width(999px) {
         @include flex_fun(column, space-between, center);

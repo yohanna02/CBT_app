@@ -12,9 +12,9 @@
 </template>
 
 <style lang="scss" scoped>
-@use "../../assets/styles/abstracts" as *;
-@use "../../assets/styles/resets" as *;
-@use "../../assets/styles/mixins" as *;
+// @use "../../assets/styles/abstracts" as *;
+// @use "../../assets/styles/resets" as *;
+// @use "../../assets/styles/mixins" as *;
 .wrapper {
     width: $width;
     height: 80vh;

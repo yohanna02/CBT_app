@@ -19,17 +19,17 @@
                     </label>
 
                     <label for="rads2">
-                        <input type="radio" id="rads2" name="Q2" />
+                        <input type="radio" id="rads2" name="Q1" />
                         <span contenteditable="true">Quetion 2</span>
                     </label>
 
                     <label for="rads3">
-                        <input type="radio" id="rads3" name="Q3" />
+                        <input type="radio" id="rads3" name="Q1" />
                         <span contenteditable="true">Quetion 3</span>
                     </label>
 
                     <label for="rads4">
-                        <input type="radio" id="rads4" name="Q4" />
+                        <input type="radio" id="rads4" name="Q1" />
                         <span contenteditable="true">Quetion 4</span>
                     </label>
                 </section>
@@ -96,9 +96,9 @@
     </div>
 </template>
 <style lang="scss" scoped>
-@use "../../assets/styles/abstracts" as *;
-@use "../../assets/styles/resets" as *;
-@use "../../assets/styles/mixins" as *;
+// @use "../../assets/styles/abstracts" as *;
+// @use "../../assets/styles/resets" as *;
+// @use "../../assets/styles/mixins" as *;
 
 .timer {
     display: flex;
