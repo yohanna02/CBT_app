@@ -1,19 +1,12 @@
 <template>
     <div class="container">
+        <a href="/"><img style="width: 25px; height: 25px; position: relative; top: 50px; left: 0;" src="../../assets/house.jpg" alt="..."></a>
         <div class="wrapper">
-            <h1>Take Exams</h1>
+            <h1>SETTINGS</h1>
             <form>
-                <input type="text" name="reg_num" placeholder="Enter Registration No"/>
-                <div>
-                    <select>
-                        <option value disabled selected>Select class</option>
-                        <option value="1">A</option>
-                        <option value="2">B</option>
-                        <option value="3">B</option>
-                        <option value="4">C</option>
-                    </select>
-                </div>
-                <button type="submit">TAKE EXAMS</button>
+                <input type="email" name="reg_num" placeholder="Amin Email" />
+                <input type="password" name="reg_num" placeholder="Amin Password" />
+                <button type="submit">Add Admin</button>
             </form>
         </div>
     </div>
@@ -25,7 +18,7 @@
 @use "../../assets/styles/mixins" as *;
 .wrapper {
     width: $width;
-    height: 100vh;
+    height: 100%;
     background: inherit;
     @include flex_fun(column, center, center);
     h1 {
@@ -36,25 +29,11 @@
         width: 30%;
         @include flex_fun(column, space-between, center);
 
-        input[type="text"] {
+        input[type="email"], input[type="password"] {
             width: 100%;
             @include base_input_style(1.5px, 0.7rem, 2rem);
             border-radius: $border_radius;
-            margin: 2rem 0;
-        }
-
-        div {
-            width: 100%;
-            select {
-                display: block;
-                width: 100%;
-                border: none;
-                border-radius: 5px;
-                padding: 1rem;
-                margin: 0 0 2rem 0;
-                flex: none;
-                @include base_input_style(1.5px, 0.7rem, 2rem);
-            }
+            margin: 1rem 0;
         }
 
         button[type="submit"] {

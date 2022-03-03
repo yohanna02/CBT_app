@@ -1,10 +1,9 @@
 <template>
     <div class="container">
-        <!-- <section class="container"> -->
         <div class="timer">
-            <span class="hours">01</span>:
-            <span class="minuts">10</span>:
-            <span class="secs">52</span>
+            <span class="hours" contenteditable="true">00</span>:
+            <span class="minuts" contenteditable="true">00</span>:
+            <span class="secs" contenteditable="true">52</span>
         </div>
         <div class="wrapper">
             <div class="first">
@@ -16,29 +15,26 @@
                 <section class="QAws">
                     <label for="rads1">
                         <input type="radio" id="rads1" name="Q1" />
-                        <span>Quetion 1</span>
+                        <span contenteditable="true">Quetion 1</span>
                     </label>
 
                     <label for="rads2">
                         <input type="radio" id="rads2" name="Q2" />
-                        <span>Quetion 2</span>
+                        <span contenteditable="true">Quetion 2</span>
                     </label>
 
                     <label for="rads3">
                         <input type="radio" id="rads3" name="Q3" />
-                        <span>Quetion 3</span>
+                        <span contenteditable="true">Quetion 3</span>
                     </label>
 
                     <label for="rads4">
                         <input type="radio" id="rads4" name="Q4" />
-                        <span>Quetion 4</span>
+                        <span contenteditable="true">Quetion 4</span>
                     </label>
                 </section>
             </div>
             <div class="second">
-                <div>
-                    <button type="submit">SUBMIT</button>
-                </div>
                 <div class="Quetions">
                     <div class="Qheader">
                         <h3>Quetion List</h3>
@@ -46,58 +42,57 @@
                     </div>
                     <ul>
                         <li class="Answered">
-                            <a href="#">Quetion 1</a>
+                            <a href="#" contenteditable="true">Quetion 1</a>
                         </li>
                         <li class="Answered">
-                            <a href="#">Quetion 2</a>
+                            <a href="#" contenteditable="true">Quetion 2</a>
                         </li>
                         <li class="Answered">
-                            <a href="#">Quetion 3</a>
+                            <a href="#" contenteditable="true">Quetion 3</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 4</a>
+                            <a href="#" contenteditable="true">Quetion 4</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 5</a>
+                            <a href="#" contenteditable="true">Quetion 5</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 6</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <a href="#" contenteditable="true">Quetion 6</a>
                         </li>
                         <li>
-                            <a href="#">Quetion 7</a>
+                            <img src="../../assets/plus.svg" alt="..." />
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-        <!-- </section> -->
     </div>
 </template>
 <style lang="scss" scoped>
@@ -120,6 +115,7 @@
     }
 }
 .wrapper {
+    // position: relative;
     width: 100%;
     min-height: fit-content !important;
     background: inherit;
@@ -171,16 +167,17 @@
         width: 100%;
         height: auto;
         display: grid;
-        gap: 20px;
+        gap: 40px;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
     label {
         @include btn_base_style;
         background: $PrimaryWhite !important;
         position: relative;
-        padding: 1rem 2rem;
+        padding: 1rem;
         border: 0.5px solid $primaryGray;
         color: $primaryGray;
+
         &:hover {
             background: $primaryBlue !important;
             color: $PrimaryWhite;
@@ -190,22 +187,66 @@
             background: $primaryGreen !important;
             border: 0.5px solid $primaryGray;
         }
+        @include mediaQuery_max_width(999px) {
+            width: 95%;
+            justify-self: right;
+        }
+        &:first-child {
+            &:before {
+                content: "Option A";
+                position: absolute;
+                top: -2.5rem;
+                display: block;
+                margin: 0.5rem 0;
+                z-index: 2;
+            }
+        }
+        &:nth-child(2) {
+            &:before {
+                content: "Option B";
+                position: absolute;
+                top: -2.5rem;
+                display: block;
+                margin: 0.5rem 0;
+                z-index: 2;
+            }
+        }
+        &:nth-child(3) {
+            &:before {
+                content: "Option C";
+                position: absolute;
+                top: -2.5rem;
+                display: block;
+                margin: 0.5rem 0;
+                z-index: 2;
+            }
+        }
+        &:last-child {
+            &:before {
+                content: "Option D";
+                position: absolute;
+                top: -2.5rem;
+                display: block;
+                margin: 0.5rem 0;
+                z-index: 2;
+            }
+        }
     }
     input[type="radio"] {
         @include btn_base_style;
-        position: absolute;
-        width: 100px;
-        height: 100%;
-        opacity: 0;
-        &:checked + span {
-            background: gold;
-        }
+        position: relative;
+        left: -35px;
     }
     @include mediaQuery_max_width(999px) {
         @include flex_fun(column, space-between, center);
         width: 100%;
         .Qframe,
-        .next_pre,
+        .next_pre {
+            margin-bottom: 4rem;
+        }
+        .Qframe {
+            height: 600px !important;
+        }
         section {
             margin-bottom: 1rem;
         }
@@ -232,7 +273,6 @@
         &:last-child {
             display: block;
             width: 70%;
-            // height: 100%;
             min-height: fit-content;
             background: $PrimaryWhite;
             padding: 2rem;
@@ -268,6 +308,23 @@
                     border: 1px solid $primaryGray;
                     margin: 1rem 0;
                     border-radius: $border_radius;
+                    &:last-child {
+                        display: grid !important;
+                        place-items: center;
+                        img {
+                            width: 20px;
+                            height: 20px;
+                        }
+                        &:hover {
+                            background: darken(
+                                $color: $primaryGreen,
+                                $amount: 15
+                            );
+                        }
+                        &:active {
+                            background: $PrimaryRed;
+                        }
+                    }
                 }
                 a {
                     color: $primaryGray;
@@ -277,7 +334,7 @@
     }
     @include mediaQuery_max_width(999px) {
         width: 100%;
-        margin: 8rem 0 1rem 0;
+        margin: 2rem 0 1rem 0;
         @include flex_fun(column-reverse, space-between, center);
         div {
             width: 100% !important;
@@ -288,15 +345,6 @@
                 }
             }
         }
-    }
-}
-.Answered {
-    background: $primaryGreen;
-    a {
-        color: $PrimaryWhite !important;
-    }
-    &:hover {
-        background: darken($color: $primaryGreen, $amount: 15);
     }
 }
 </style>

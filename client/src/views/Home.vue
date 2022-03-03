@@ -1,6 +1,6 @@
 <template>
-    <div class="body">
-        <div class="container">
+    <div class="container">
+        <div class="wrapper">
             <router-link to="/studentlogin" class="link">TAKE EXAMS</router-link>
             <router-link to="/" class="link">LOGIN</router-link>
         </div>
@@ -10,18 +10,9 @@
 @use "../assets/styles/abstracts" as *;
 @use "../assets/styles/resets" as *;
 @use "../assets/styles/mixins" as *;
-html {
-  scroll-behavior: smooth;
-  overflow: hidden;
-
-  .body {
-    background: $primaryBGColor;
-    width: 100vw;
-    max-width: 1700px;
-  }
-}
-.container {
+.wrapper {
     width: $width;
+    height: 100%;
     overflow-y: hidden;
     @include flex_fun(column, space-between, center);
     .link {

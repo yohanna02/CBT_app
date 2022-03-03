@@ -15,18 +15,16 @@ html {
   scroll-behavior: smooth;
   overflow: hidden;
 
-  .body {
-    background: $primaryBGColor;
+  body {
+    background-color: $primaryBGColor;
     width: 100vw;
     max-width: 1700px;
   }
 }
 
-// .body {
-//   background: $primaryBGColor;
-//   width: 100vw;
-//   max-width: 1700px;
-// }
+template > div {
+  background-color: $primaryBGColor;
+}
 
 .container {
   background: inherit;

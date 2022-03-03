@@ -1,19 +1,26 @@
 <template>
     <div class="container">
+        <a href="/">
+            <img
+                style="width: 25px; height: 25px; position: relative; top: 50px; left: 0;"
+                src="../../assets/house.jpg"
+                alt="..."
+            />
+        </a>
         <div class="wrapper">
-            <h1>Take Exams</h1>
+            <h1>ADD STUDENT</h1>
             <form>
-                <input type="text" name="reg_num" placeholder="Enter Registration No"/>
+                <input type="text" name="reg_num" placeholder="Class Name" />
                 <div>
                     <select>
-                        <option value disabled selected>Select class</option>
+                        <option value disabled selected>Student Class</option>
                         <option value="1">A</option>
                         <option value="2">B</option>
                         <option value="3">B</option>
                         <option value="4">C</option>
                     </select>
                 </div>
-                <button type="submit">TAKE EXAMS</button>
+                <button type="submit">Add student</button>
             </form>
         </div>
     </div>
@@ -25,7 +32,7 @@
 @use "../../assets/styles/mixins" as *;
 .wrapper {
     width: $width;
-    height: 100vh;
+    height: 100%;
     background: inherit;
     @include flex_fun(column, center, center);
     h1 {
@@ -40,9 +47,8 @@
             width: 100%;
             @include base_input_style(1.5px, 0.7rem, 2rem);
             border-radius: $border_radius;
-            margin: 2rem 0;
+            margin: 1rem 0;
         }
-
         div {
             width: 100%;
             select {
