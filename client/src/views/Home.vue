@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <div class="wrapper">
-            <router-link to="/studentlogin" class="link">TAKE EXAMS</router-link>
-            <router-link to="/" class="link">LOGIN</router-link>
+            <router-link :to="{name: 'Students_login'}" class="link">TAKE EXAMS</router-link>
+            <router-link :to="{name: 'AdminLogin'}" class="link">LOGIN</router-link>
         </div>
     </div>
 </template>

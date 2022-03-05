@@ -27,6 +27,7 @@
 }
 @mixin btn_base_style_hover($BGcolor: $primaryBlue, $Amount: 7) {
   background: darken($color: $BGcolor, $amount: $Amount);
+  cursor: pointer;
   @content;
 }
 @mixin btn_base_style_active($BGcolor: $primaryGray, $color: $primaryBlue) {
