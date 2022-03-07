@@ -33,7 +33,7 @@
                     </div>
                     <p>Exams Results</p>
                 </div>
-                <div class="item">
+                <div @click="logout" class="item">
                     <div>
                         <img src="../../assets/arrow-right-from-bracket.jpg" alt="..." />
                     </div>
@@ -43,6 +43,19 @@
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { useRouter } from "vue-router";
+import { useStore } from "../../store"
+import { ActionTypes } from "../../store/admin";
+
+const store = useStore();
+const router = useRouter();
+const logout = async () => {
+    await store.dispatch(ActionTypes.LOG_OUT);
+    router.push({name: "AdminLogin"});
+}
+</script>
 
 <style lang="scss" scoped>
 // @use "../../assets/styles/abstracts" as *;
@@ -75,6 +88,7 @@
             border-radius: 5px;
             border: 1px solid $primaryGray;
             box-shadow: 0.5px 0.5px 5px $primaryGray;
+            cursor: pointer;
 
             div {
                 width: 90px;

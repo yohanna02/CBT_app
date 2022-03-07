@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { store } from "../store/index";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -36,6 +37,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/dashboard.vue"),
         meta: {
           title: "Admin Dashboard",
+          requiresAuth: true
         },
       },
       {
@@ -53,6 +55,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/addClass.vue"),
         meta: {
           title: "Add Class",
+          requiresAuth: true
         },
       },
       {
@@ -61,6 +64,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/addStudent.vue"),
         meta: {
           title: "Add Student",
+          requiresAuth: true
         },
       },
       {
@@ -69,6 +73,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/settings.vue"),
         meta: {
           title: "Admin settings",
+          requiresAuth: true
         },
       },
       {
@@ -77,6 +82,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/classList.vue"),
         meta: {
           title: "Admin class list",
+          requiresAuth: true
         },
       },
       {
@@ -85,6 +91,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/studentLists.vue"),
         meta: {
           title: "student Lists",
+          requiresAuth: true
         },
       },
       {
@@ -93,15 +100,29 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/adminSetQuesions.vue"),
         meta: {
           title: "Set Quesions",
+          requiresAuth: true
         },
       },
     ],
   },
+  {
+    path: '/:catchAll(.*)',
+    name: '404',
+    component: () => import(/* webpackChunkName: "404" */'../views/404.vue'),
+    meta: {
+      title: '404'
+    }
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !store.getters.isLoggedIn) next({name: "AdminLogin"})
+  else next();
 });
 
 export default router;
