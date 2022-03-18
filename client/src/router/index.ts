@@ -108,7 +108,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/:catchAll(.*)',
     name: '404',
-    component: () => import(/* webpackChunkName: "404" */'../views/404.vue'),
+    component: () => import('../views/404.vue'),
     meta: {
       title: '404'
     }
@@ -121,7 +121,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !store.getters.isLoggedIn) next({name: "AdminLogin"})
+  if (to.meta.requiresAuth && !store.getters.isLoggedIn) next({name: "AdminLogin"});
   else next();
 });
 

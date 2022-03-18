@@ -25,6 +25,7 @@ export const state: AdminStateTypes = {
 export enum ActionTypes {
   LOG_IN = "LOG_IN",
   LOG_OUT = "LOG_OUT",
+  ADD_ADMIN = "ADD_ADMIN"
 }
 
 // store/modules/counter/mutation-types.ts
@@ -61,6 +62,14 @@ export const actions: ActionTree<AdminStateTypes, IRootState> &
     localStorage.clear();
     commit(MutationTypes.SET_AUTH, false);
   },
+  async [ActionTypes.ADD_ADMIN]({ commit }, {email, password}) {
+    const { data } = await axios.post("/api/auth/add-admin", {
+      email,
+      password
+    });
+
+    alert(data.msg);
+  }
 };
 
 export type AdminStoreModuleTypes<S = AdminStateTypes> = Omit<

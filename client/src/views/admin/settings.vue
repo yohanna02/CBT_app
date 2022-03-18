@@ -1,16 +1,16 @@
 <template>
     <div class="container">
-        <a href="/"><img style="width: 25px; height: 25px; position: relative; top: 50px; left: 0;" src="../../assets/house.jpg" alt="..."></a>
+        <router-link :to="{name: 'dashboard'}"><img style="width: 25px; height: 25px; position: relative; top: 50px; left: 0;" src="../../assets/house.jpg" alt="..."></router-link>
         <div class="wrapper">
             <h1>SETTINGS</h1>
-            <form>
-                <input type="email" name="reg_num" placeholder="Amin Email" />
-                <input type="password" name="reg_num" placeholder="Amin Password" />
-                <button type="submit">Add Admin</button>
-            </form>
+            <AuthForm authType="ADMIN" />
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import AuthForm from "../../components/AuthForm.vue";
+</script>
 
 <style lang="scss" scoped>
 // @use "../../assets/styles/abstracts" as *;

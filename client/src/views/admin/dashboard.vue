@@ -3,25 +3,25 @@
         <div class="wrapper">
             <h1>ADMIN DASHBOARD</h1>
             <div class="wrapLinks">
-                <div class="item">
+                <div @click="$router.push({name: 'addClass'})" class="item">
                     <div>
                         <img src="../../assets/school.jpg" alt="..." />
                     </div>
                     <p>ADD Class</p>
                 </div>
-                <div class="item">
+                <div @click="$router.push({name: 'addStudent'})" class="item">
                     <div>
                         <img src="../../assets/user-graduate.jpg" alt="..." />
                     </div>
                     <p>ADD Student</p>
                 </div>
-                <div class="item">
+                <div @click="$router.push({name: 'Settings'})" class="item">
                     <div>
                         <img src="../../assets/gear.jpg" alt="..." />
                     </div>
-                    <p>ADD Settings</p>
+                    <p>Settings</p>
                 </div>
-                <div class="item">
+                <div @click="$router.push({name: 'adminSetQuesions'})" class="item">
                     <div>
                         <img src="../../assets/file.jpg" alt="..." />
                     </div>

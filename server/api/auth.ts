@@ -25,4 +25,11 @@ router.post("/login", (req, res) => {
     login(req, res);
 });
 
+router.post("/add-admin", (req, res) => {
+    const {error} = schema.validate(req.body);
+
+    if (error) return res.status(422).json(error);
+    registerAdmin(req, res);
+});
+
 export default router;
