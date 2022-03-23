@@ -26,10 +26,15 @@ export type AugmentedActionContext = {
 interface LoginData {
   email: string;
   password: string;
-}
+};
+
+interface ClassData {
+  className: string
+};
 
 export interface AdminActionsTypes {
   [AdminATypes.LOG_IN]({ commit }: AugmentedActionContext, payload: LoginData): void;
   [AdminATypes.LOG_OUT]({commit}: AugmentedActionContext): void;
   [AdminATypes.ADD_ADMIN]({ commit }: AugmentedActionContext, payload: LoginData): void;
+  [AdminATypes.ADD_CLASS](context: AugmentedActionContext, payload: ClassData): void;
 }

@@ -25,7 +25,8 @@ export const state: AdminStateTypes = {
 export enum ActionTypes {
   LOG_IN = "LOG_IN",
   LOG_OUT = "LOG_OUT",
-  ADD_ADMIN = "ADD_ADMIN"
+  ADD_ADMIN = "ADD_ADMIN",
+  ADD_CLASS = "ADD_CLASS",
 }
 
 // store/modules/counter/mutation-types.ts
@@ -40,17 +41,16 @@ export const getters: GetterTree<AdminStateTypes, IRootState> &
   },
 };
 
-export const mutations: MutationTree<AdminStateTypes> & AdminMutationsTypes =
-  {
-    [MutationTypes.SET_AUTH](state: AdminStateTypes, payload: boolean) {
-      state.auth = payload;
-    },
-  };
+export const mutations: MutationTree<AdminStateTypes> & AdminMutationsTypes = {
+  [MutationTypes.SET_AUTH](state: AdminStateTypes, payload: boolean) {
+    state.auth = payload;
+  },
+};
 
 export const actions: ActionTree<AdminStateTypes, IRootState> &
   AdminActionsTypes = {
   async [ActionTypes.LOG_IN]({ commit }, { email, password }) {
-    const { data } = await axios.post("/api/auth/login", {
+    const { data } = await axios.post<{ token: string }>("/api/auth/login", {
       email,
       password,
     });
@@ -62,14 +62,37 @@ export const actions: ActionTree<AdminStateTypes, IRootState> &
     localStorage.clear();
     commit(MutationTypes.SET_AUTH, false);
   },
-  async [ActionTypes.ADD_ADMIN]({ commit }, {email, password}) {
-    const { data } = await axios.post("/api/auth/add-admin", {
-      email,
-      password
-    });
+  async [ActionTypes.ADD_ADMIN](context, { email, password }) {
+    const { data } = await axios.post<{ msg: string }>(
+      "/api/auth/register",
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          authorization: localStorage.getItem("token") || "",
+        },
+      }
+    );
 
     alert(data.msg);
-  }
+  },
+  async [ActionTypes.ADD_CLASS](context, { className }) {
+    const { data } = await axios.post<{ msg: string }>(
+      "/api/admin/add-class",
+      {
+        className,
+      },
+      {
+        headers: {
+          authorization: localStorage.getItem("token") || "",
+        },
+      }
+    );
+
+    alert(data.msg);
+  },
 };
 
 export type AdminStoreModuleTypes<S = AdminStateTypes> = Omit<

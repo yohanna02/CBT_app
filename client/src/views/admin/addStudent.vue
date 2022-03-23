@@ -1,12 +1,12 @@
 <template>
     <div class="container">
-        <a href="/">
+        <router-link :to="{name: 'dashboard'}">
             <img
                 style="width: 25px; height: 25px; position: relative; top: 50px; left: 0;"
                 src="../../assets/house.jpg"
                 alt="..."
             />
-        </a>
+        </router-link>
         <div class="wrapper">
             <h1>ADD STUDENT</h1>
             <form>

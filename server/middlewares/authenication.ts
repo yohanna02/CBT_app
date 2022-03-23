@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction} from "express";
 import jwt from "jsonwebtoken";
 
-import adminModel from "../model/adminModel";
-import { JWTSecret } from "../controller/adminController";
+import adminModel from "../model/authModel";
+import { JWTSecret } from "../controller/authController";
 
 const isAuth = async (req: Request, res: Response, next: NextFunction) => {
     try {

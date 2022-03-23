@@ -1,57 +1,95 @@
 <template>
-    <div class="container">
-        <a href="/"><img style="width: 25px; height: 25px; position: relative; top: 50px; left: 0;" src="../../assets/house.jpg" alt="..."></a>
-        <div class="wrapper">
-            <h1>ADD CLASS</h1>
-            <form>
-                <input type="text" name="reg_num" placeholder="Class Name" />
-                <button type="submit">Add class</button>
-            </form>
-        </div>
+  <div class="container">
+    <router-link :to="{ name: 'dashboard' }"
+      ><img
+        style="
+          width: 25px;
+          height: 25px;
+          position: relative;
+          top: 50px;
+          left: 0;
+        "
+        src="../../assets/house.jpg"
+        alt="..."
+    /></router-link>
+    <div class="wrapper">
+      <h1>ADD CLASS</h1>
+      <form @submit.prevent="addClass">
+        <input v-model="className" type="text" placeholder="Class Name" />
+        <button type="submit">{{loading ? "Adding..." : "Add class"}}</button>
+      </form>
     </div>
+  </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { useStore } from "../../store";
+import { ActionTypes } from "../../store/admin";
+
+const store = useStore();
+
+const className = ref("");
+const loading = ref(false);
+
+const addClass = async () => {
+  try {
+    loading.value = true;
+    
+    await store.dispatch(ActionTypes.ADD_CLASS, {className: className.value});
+
+    className.value = "";
+    loading.value = false;
+  } catch (err: any) {
+    loading.value = false;
+    if (err.response) return alert(err.response.data.msg);
+
+    alert("An Error Occured");
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 // @use "../../assets/styles/abstracts" as *;
 // @use "../../assets/styles/resets" as *;
 // @use "../../assets/styles/mixins" as *;
 .wrapper {
-    width: $width;
-    height: 100%;
-    background: inherit;
-    @include flex_fun(column, center, center);
-    h1 {
-        @include flex_fun(center, center);
-        margin: 1rem 0;
+  width: $width;
+  height: 100%;
+  background: inherit;
+  @include flex_fun(column, center, center);
+  h1 {
+    @include flex_fun(center, center);
+    margin: 1rem 0;
+  }
+  form {
+    width: 30%;
+    @include flex_fun(column, space-between, center);
+
+    input[type="text"] {
+      width: 100%;
+      @include base_input_style(1.5px, 0.7rem, 2rem);
+      border-radius: $border_radius;
+      margin: 1rem 0;
     }
-    form {
-        width: 30%;
-        @include flex_fun(column, space-between, center);
 
-        input[type="text"] {
-            width: 100%;
-            @include base_input_style(1.5px, 0.7rem, 2rem);
-            border-radius: $border_radius;
-            margin: 1rem 0;
-        }
+    button[type="submit"] {
+      width: 100%;
+      @include btn_base_style;
+      @include base_input_style(1.5px, 0.7rem, 2rem);
+      color: $PrimaryWhite;
+      font-size: calc($fontsize - 2px);
 
-        button[type="submit"] {
-            width: 100%;
-            @include btn_base_style;
-            @include base_input_style(1.5px, 0.7rem, 2rem);
-            color: $PrimaryWhite;
-            font-size: calc($fontsize - 2px);
-
-            &:hover {
-                @include btn_base_style_hover($primaryBlue);
-            }
-            &:active {
-                @include btn_base_style_active($PrimaryWhite);
-            }
-        }
-        @include mediaQuery_max_width {
-            width: 100%;
-        }
+      &:hover {
+        @include btn_base_style_hover($primaryBlue);
+      }
+      &:active {
+        @include btn_base_style_active($PrimaryWhite);
+      }
     }
+    @include mediaQuery_max_width {
+      width: 100%;
+    }
+  }
 }
 </style>

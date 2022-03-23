@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import User from "../interfaces/UserInterface";
 
-const schema = new mongoose.Schema({
+const schema = new mongoose.Schema<User>({
   email: {
     type: String,
     required: true,
@@ -11,6 +12,6 @@ const schema = new mongoose.Schema({
   }
 });
   
-const model = mongoose.model("admin", schema);
+const model = mongoose.model<User>("user", schema);
 
 export default model;

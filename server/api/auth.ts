@@ -1,7 +1,7 @@
 import { Router } from "express";
 import Joi from "joi";
 
-import { login, registerAdmin } from "../controller/adminController";
+import { login, registerAdmin } from "../controller/authController";
 import isAuth from "../middlewares/authenication";
 
 const router = Router();
@@ -23,13 +23,6 @@ router.post("/login", (req, res) => {
 
     if (error) return res.status(422).json(error);
     login(req, res);
-});
-
-router.post("/add-admin", (req, res) => {
-    const {error} = schema.validate(req.body);
-
-    if (error) return res.status(422).json(error);
-    registerAdmin(req, res);
 });
 
 export default router;
