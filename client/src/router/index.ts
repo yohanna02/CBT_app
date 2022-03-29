@@ -82,7 +82,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/classList.vue"),
         meta: {
           title: "Admin class list",
-          requiresAuth: true
+          // requiresAuth: true
         },
       },
       {
@@ -91,7 +91,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/studentLists.vue"),
         meta: {
           title: "student Lists",
-          requiresAuth: true
+          // requiresAuth: true
         },
       },
       {

@@ -3,17 +3,32 @@ import { MutationTypes as AdminMTypes } from "./admin";
 import { ActionTypes as AdminATypes } from "./admin";
 import { IRootState } from "./interface";
 
+interface LoginData {
+  email: string;
+  password: string;
+};
+
+export interface ListData {
+  _id?: string;
+  name: string;
+};
 export interface AdminStateTypes {
   auth: boolean;
+  students: ListData[];
+  classes: ListData[];
   rootDispatch?: boolean;
 }
 
 export interface AdminGettersTypes {
   isLoggedIn(state: AdminStateTypes): boolean;
+  getStudent(state: AdminStateTypes): ListData[];
+  getClasses(state: AdminStateTypes): ListData[];
 }
 
 export type AdminMutationsTypes<S = AdminStateTypes> = {
   [AdminMTypes.SET_AUTH](state: S, payload: boolean): void;
+  [AdminMTypes.SET_STUDENT](state: S, payload: ListData[]): void;
+  [AdminMTypes.SET_CLASS](state: S, payload: ListData[]): void;
 };
 
 export type AugmentedActionContext = {
@@ -23,18 +38,11 @@ export type AugmentedActionContext = {
   ): ReturnType<AdminMutationsTypes[K]>;
 } & Omit<ActionContext<AdminStateTypes, IRootState>, "commit">;
 
-interface LoginData {
-  email: string;
-  password: string;
-};
-
-interface ClassData {
-  className: string
-};
-
 export interface AdminActionsTypes {
   [AdminATypes.LOG_IN]({ commit }: AugmentedActionContext, payload: LoginData): void;
   [AdminATypes.LOG_OUT]({commit}: AugmentedActionContext): void;
   [AdminATypes.ADD_ADMIN]({ commit }: AugmentedActionContext, payload: LoginData): void;
-  [AdminATypes.ADD_CLASS](context: AugmentedActionContext, payload: ClassData): void;
+  [AdminATypes.ADD_CLASS]({ dispatch }: AugmentedActionContext, payload: ListData): void;
+  [AdminATypes.FETCH_CLASS_LIST]({ commit }: AugmentedActionContext): void;
+  [AdminATypes.DELETE_CLASS]({ commit }: AugmentedActionContext, payload: {id: string}): void;
 }

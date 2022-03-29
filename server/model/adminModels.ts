@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import ClassInterface from "../interfaces/ClassInterface";
 
 const classSchema = new mongoose.Schema<ClassInterface>({
-  className: {
+  name: {
     type: String,
     required: true,
   },

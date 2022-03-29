@@ -1,3 +1,4 @@
 export default interface ClassInterface {
-  className: string;
+  _id?: string;
+  name: string;
 }

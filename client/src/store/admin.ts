@@ -13,12 +13,15 @@ import {
   AdminActionsTypes,
   AdminMutationsTypes,
   AdminGettersTypes,
+  ListData,
 } from "./adminInterface";
 
 import { IRootState } from "./interface";
 
 export const state: AdminStateTypes = {
   auth: false,
+  students: [],
+  classes: []
 };
 
 // store/modules/counter/action-types.ts
@@ -27,24 +30,40 @@ export enum ActionTypes {
   LOG_OUT = "LOG_OUT",
   ADD_ADMIN = "ADD_ADMIN",
   ADD_CLASS = "ADD_CLASS",
-}
+  FETCH_CLASS_LIST = "FETCH_CLASS_LIST",
+  DELETE_CLASS = "DLELETE_CLASS"
+};
 
 // store/modules/counter/mutation-types.ts
 export enum MutationTypes {
   SET_AUTH = "SET_AUTH",
-}
+  SET_STUDENT = "SET_STUDENT",
+  SET_CLASS = "SET_CLASS"
+};
 
 export const getters: GetterTree<AdminStateTypes, IRootState> &
   AdminGettersTypes = {
   isLoggedIn: (state: AdminStateTypes) => {
     return state.auth;
   },
+  getStudent: (state: AdminStateTypes) => {
+    return state.students;
+  },
+  getClasses: (state: AdminStateTypes) => {
+    return state.classes;
+  }
 };
 
 export const mutations: MutationTree<AdminStateTypes> & AdminMutationsTypes = {
   [MutationTypes.SET_AUTH](state: AdminStateTypes, payload: boolean) {
     state.auth = payload;
   },
+  [MutationTypes.SET_STUDENT](state: AdminStateTypes, payload: ListData[]) {
+    state.students = payload;
+  },
+  [MutationTypes.SET_CLASS](state: AdminStateTypes, payload: ListData[]) {
+    state.classes = payload;
+  }
 };
 
 export const actions: ActionTree<AdminStateTypes, IRootState> &
@@ -78,11 +97,11 @@ export const actions: ActionTree<AdminStateTypes, IRootState> &
 
     alert(data.msg);
   },
-  async [ActionTypes.ADD_CLASS](context, { className }) {
+  async [ActionTypes.ADD_CLASS]({dispatch}, { name }) {
     const { data } = await axios.post<{ msg: string }>(
-      "/api/admin/add-class",
+      "/api/admin/class",
       {
-        className,
+        className: name,
       },
       {
         headers: {
@@ -90,9 +109,21 @@ export const actions: ActionTree<AdminStateTypes, IRootState> &
         },
       }
     );
-
+    
+    dispatch(ActionTypes.FETCH_CLASS_LIST);
     alert(data.msg);
   },
+  async [ActionTypes.FETCH_CLASS_LIST]({commit}) {
+    const { data } = await axios.get<ListData[]>("/api/admin/class");
+
+    commit(MutationTypes.SET_STUDENT, data);
+  },
+  async [ActionTypes.DELETE_CLASS]({commit, dispatch}, {id}) {
+    const {data} = await axios.delete<{msg: string}>(`/api/admin/class/${id}`);
+
+    dispatch(ActionTypes.FETCH_CLASS_LIST);
+    alert(data.msg);
+  }
 };
 
 export type AdminStoreModuleTypes<S = AdminStateTypes> = Omit<
