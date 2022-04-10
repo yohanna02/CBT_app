@@ -12,6 +12,13 @@ export interface ListData {
   _id?: string;
   name: string;
 };
+
+export interface StudentData {
+  _id?: string,
+  regNo:  string,
+  class_id: string
+};
+
 export interface AdminStateTypes {
   auth: boolean;
   students: ListData[];
@@ -45,4 +52,5 @@ export interface AdminActionsTypes {
   [AdminATypes.ADD_CLASS]({ dispatch }: AugmentedActionContext, payload: ListData): void;
   [AdminATypes.FETCH_CLASS_LIST]({ commit }: AugmentedActionContext): void;
   [AdminATypes.DELETE_CLASS]({ commit }: AugmentedActionContext, payload: {id: string}): void;
+  [AdminATypes.ADD_STUDENT](context: AugmentedActionContext, payload: StudentData): void;
 }

@@ -37,7 +37,7 @@ const store = useStore();
 const className = ref("");
 const loading = ref(false);
 
-const classList = computed(() => store.getters.getStudent);
+const classList = computed(() => store.getters.getClasses);
 
 const addClass = async () => {
   try {

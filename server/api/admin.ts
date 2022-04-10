@@ -1,11 +1,7 @@
 import { Router } from "express";
-import Joi from "joi";
-import { addNewClass, deleteClass, fetchClass } from "../controller/adminController";
+import { addNewClass, addStudent, deleteClass, fetchClass } from "../controller/adminController";
 import isAuth from "../middlewares/authenication";
-
-const classSchema = Joi.object({
-    className: Joi.string().required()
-});
+import { classSchema, studentSchema } from "../validation_schema/adminValidation";
 
 const router = Router();
 
@@ -21,8 +17,16 @@ router.get("/class", (req, res) => {
     fetchClass(req, res);
 });
 
-router.delete("/class/:id", (req, res) => {
+router.delete("/class/:id", isAuth, (req, res) => {
     deleteClass(req, res);
+});
+
+router.post("/student", isAuth, (req, res) => {
+    const {error} = studentSchema.validate(req.body);
+
+    if (error) return res.status(422).json(error);
+
+    addStudent(req, res);
 });
 
 

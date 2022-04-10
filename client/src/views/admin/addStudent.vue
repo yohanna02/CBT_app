@@ -9,22 +9,52 @@
         </router-link>
         <div class="wrapper">
             <h1>ADD STUDENT</h1>
-            <form>
-                <input type="text" name="reg_num" placeholder="Class Name" />
+            <form @submit.prevent="registerStudent">
+                <input type="text" v-model="regNo" placeholder="Registration Number" />
                 <div>
-                    <select>
-                        <option value disabled selected>Student Class</option>
-                        <option value="1">A</option>
-                        <option value="2">B</option>
-                        <option value="3">B</option>
-                        <option value="4">C</option>
+                    <select v-model="class_id">
+                        <option value="" disabled selected>Student Class</option>
+                        <option v-for="_class in classList" :key="_class._id" :value="_class._id">{{ _class.name }}</option>
                     </select>
                 </div>
-                <button type="submit">Add student</button>
+                <button type="submit">{{loading ? "Adding..." : "Add student"}}</button>
             </form>
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { useStore } from "../../store";
+import { computed, ref, onMounted } from "vue";
+
+import { ActionTypes } from "../../store/admin";
+
+const store = useStore();
+
+const classList = computed(() => store.getters.getClasses);
+const class_id = ref("");
+const regNo = ref("");
+const loading = ref(false);
+
+onMounted(async () => {
+  await store.dispatch(ActionTypes.FETCH_CLASS_LIST);
+});
+
+const registerStudent = async () => {
+    try {
+        loading.value = true;
+        await store.dispatch(ActionTypes.ADD_STUDENT, {regNo: regNo.value, class_id: class_id.value});
+        loading.value = false;
+        regNo.value = "";
+        class_id.value = "";
+    } catch (err: any) {
+        loading.value = false;
+        if (err.response) return alert(err.response.data.msg);
+
+        alert("An Error Occured");
+    }
+};
+</script>
 
 <style lang="scss" scoped>
 // @use "../../assets/styles/abstracts" as *;

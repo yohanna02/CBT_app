@@ -31,7 +31,8 @@ export enum ActionTypes {
   ADD_ADMIN = "ADD_ADMIN",
   ADD_CLASS = "ADD_CLASS",
   FETCH_CLASS_LIST = "FETCH_CLASS_LIST",
-  DELETE_CLASS = "DLELETE_CLASS"
+  DELETE_CLASS = "DLELETE_CLASS",
+  ADD_STUDENT = "ADD_STUDENT"
 };
 
 // store/modules/counter/mutation-types.ts
@@ -116,13 +117,26 @@ export const actions: ActionTree<AdminStateTypes, IRootState> &
   async [ActionTypes.FETCH_CLASS_LIST]({commit}) {
     const { data } = await axios.get<ListData[]>("/api/admin/class");
 
-    commit(MutationTypes.SET_STUDENT, data);
+    commit(MutationTypes.SET_CLASS, data);
   },
   async [ActionTypes.DELETE_CLASS]({commit, dispatch}, {id}) {
-    const {data} = await axios.delete<{msg: string}>(`/api/admin/class/${id}`);
+    const {data} = await axios.delete<{msg: string}>(`/api/admin/class/${id}`, {
+      headers: {
+        authorization: localStorage.getItem("token") || "",
+      }
+    });
 
     dispatch(ActionTypes.FETCH_CLASS_LIST);
     alert(data.msg);
+  },
+  async [ActionTypes.ADD_STUDENT](context, data) {
+    const res = await axios.post<{msg: string}>("/api/admin/student", data, {
+      headers: {
+        authorization: localStorage.getItem("token") || "",
+      }
+    });
+
+    alert(res.data.msg);
   }
 };
 
