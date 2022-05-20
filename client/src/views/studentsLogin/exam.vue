@@ -8,7 +8,7 @@
         </div>
         <div class="wrapper">
             <div class="first">
-                <textarea class="Qframe"></textarea>
+                <textarea class="Qframe" disabled></textarea>
                 <div class="next_pre">
                     <button class="pre">Pre</button>
                     <button class="next">Next</button>
