@@ -2,7 +2,7 @@ import { ActionContext } from "vuex";
 import { MutationTypes as ExamMTypes } from "./exam";
 import { ActionTypes as ExamATypes } from "./exam";
 import { IRootState } from "./interface";
-import ExamInterface from "../../../global/ExamInterface";
+import ExamInterface from "../../../server/global/ExamInterface";
 
 export type optionType = "" | "option_1" | "option_2" | "option_3" | "option_4";
 

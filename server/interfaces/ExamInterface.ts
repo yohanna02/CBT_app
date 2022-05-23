@@ -1,10 +1,12 @@
+import mongoose from "mongoose";
+
 type QuestionType = "OBJECTIVE" | "FILL_IN_THE_BLANK"
 
 export default interface Exam {
-    classId: string,
+    classId: mongoose.ObjectId,
     examDate: {
         timeAndDate: Date,
-        duration: number 
+        duration: string 
     },
     questions: [
         {
