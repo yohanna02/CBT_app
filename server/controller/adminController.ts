@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { classModel, studentModel } from "../model/adminModels";
+import classModel from "../model/adminModels";
 
 export const addNewClass = async (req: Request, res: Response) => {
   try {
@@ -47,21 +47,22 @@ export const deleteClass = async (req:Request, res: Response) => {
 
 export const addStudent = async (req: Request, res: Response) => {
   try {
-    const studentExist = await studentModel.findOne({ regNo: req.body.regNo });
+    const studentExist = await classModel.findOne({ students: { "$in" : [{regNo: req.body.regNo}]} });
     if (studentExist) return res.status(422).json({msg: "Registration Number already exist"});
 
     const classExist = await classModel.findOne({_id: req.body.class_id});
     if (!classExist) return res.status(422).json({ msg: "Error! Class does not exist"});
 
-    const newStudent = new studentModel({
-      regNo: req.body.regNo,
-      class_id: req.body.class_id
+    classExist.students.push({
+      regNo: req.body.regNo
     });
 
-    await newStudent.save();
+    await classExist.save();
+
     res.json({msg: "Student registered successfully"});
   } catch (error) {
-    // res.json({ msg: "An Error occured" });
-    res.json(error);
+    console.log(error);
+    res.json({ msg: "An Error occured" });
+    // res.json(error);
   }
 };

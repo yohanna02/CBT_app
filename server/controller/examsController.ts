@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import Exam from "../interfaces/ExamInterface";
 import { scheduleExams } from "../jobs/examJob";
 import examModel from "../model/examModel";
-import { classModel } from "../model/adminModels";
+import classModel from "../model/adminModels";
 
 export const setExams = async (req: Request, res: Response) => {
     try {
