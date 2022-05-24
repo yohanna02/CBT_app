@@ -15,7 +15,7 @@
       </button>
       <span class="modal__title">Exams Options</span>
       <div class="modal__content">
-        <form>
+        <form class="form">
           <div class="form-group">
             <label for="date-and-time">Date and Time</label>
             <input
@@ -171,6 +171,26 @@ onMounted(async () => {
     padding: 0.5rem;
     flex-grow: 1;
     overflow: auto;
+
+    .form {
+      width: fit-content;
+      height: fit-content;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        margin: 1.5rem 0;
+        label {
+          margin: .6rem 0;
+        }
+        input,
+        select {
+          width: 350px;
+          padding: 1rem;
+          text-indent: 0.5rem;
+        }
+      }
+    }
   }
 
   .modal__action {

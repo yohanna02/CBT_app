@@ -114,7 +114,7 @@ watch(answer, (ans) => {
             background: $primaryGreen !important;
         }
     }
-    section {
+    .QAws {
         width: 100%;
         height: auto;
         display: grid;
@@ -128,10 +128,11 @@ watch(answer, (ans) => {
         padding: 1rem;
         border: 0.5px solid $primaryGray;
         color: $primaryGray;
+        cursor: pointer;
 
         &:hover {
-            background: $primaryBlue !important;
-            color: $PrimaryWhite;
+            color: $primaryBlack;
+            // color: $PrimaryWhite;
             border: none;
         }
         &:active {
@@ -187,6 +188,19 @@ watch(answer, (ans) => {
         @include btn_base_style;
         position: relative;
         left: -35px;
+        // opacity: 0;
+    }
+    input[type="text"] {
+        display: block;
+        width: 100%;
+        // height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        text-indent: 1rem;
+        // background-color: gold;
+        // border: none;
     }
     @include mediaQuery_max_width(999px) {
         @include flex_fun(column, space-between, center);

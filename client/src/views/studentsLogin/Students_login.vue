@@ -2,15 +2,14 @@
     <div class="container">
         <div class="wrapper">
             <h1>Take Exams</h1>
-            <form>
-                <input type="text" name="reg_num" placeholder="Enter Registration No"/>
+            <form @submit.prevent="takeExams">
+                <input type="text" v-model="regNo" placeholder="Enter Registration No"/>
                 <div>
-                    <select>
-                        <option value disabled selected>Select class</option>
-                        <option value="1">A</option>
-                        <option value="2">B</option>
-                        <option value="3">B</option>
-                        <option value="4">C</option>
+                    <select v-model="classId">
+                        <option value="" disabled selected>{{loading ? "Loading..." : "--Select class--"}}</option>
+                        <option v-for="_class in classList" :key="_class._id" :value="_class._id">
+                            {{ _class.name }}
+                        </option>
                     </select>
                 </div>
                 <button type="submit">TAKE EXAMS</button>
@@ -18,6 +17,30 @@
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { useStore } from '../../store';
+import { ActionTypes } from '../../store/admin';
+
+const store = useStore();
+
+const classId = ref("");
+const regNo = ref("");
+const loading = ref(false);
+
+const classList = computed(() => store.getters.getClasses);
+
+const takeExams = () => {
+
+};
+
+onMounted(async () => {
+    loading.value = true;
+    await store.dispatch(ActionTypes.FETCH_CLASS_LIST);
+    loading.value = false;
+});
+</script>
 
 <style lang="scss" scoped>
 // @use "../../assets/styles/abstracts" as *;
