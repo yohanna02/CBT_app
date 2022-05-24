@@ -24,7 +24,7 @@ export const state: ExamStateTypes = {
         classId: "",
         examDate: {
             timeAndDate: new Date(),
-            duration: 0
+            duration: ""
         },
         questions: [
             {
@@ -55,7 +55,7 @@ export const state: ExamStateTypes = {
 
 // store/modules/counter/action-types.ts
 export enum ActionTypes {
-
+    SET_EXAMS = "SET_EXAMS"
 };
 
 // store/modules/counter/mutation-types.ts
@@ -63,7 +63,8 @@ export enum MutationTypes {
     ADD_QUESTION = "ADD_QUESTION",
     SET_CURRENT_QUESTION = "SET_CURRENT_QUESTION",
     UPDATE_ANSWER = "UPDATE_ANSWER",
-    SET_CLASS_ID = "SET_CLASS_ID"
+    SET_CLASS_ID = "SET_CLASS_ID",
+    RESET_QUESTIONS = "RESET_QUESTIONS"
 };
 
 export const getters: GetterTree<ExamStateTypes, IRootState> &
@@ -140,12 +141,60 @@ export const mutations: MutationTree<ExamStateTypes> & ExamMutationsTypes = {
     },
     [MutationTypes.SET_CLASS_ID](state: ExamStateTypes, payload: ExamStateTypes["exam"]["classId"]) {
         state.exam.classId = payload;
+    },
+    [MutationTypes.RESET_QUESTIONS](state: ExamStateTypes) {
+        // console.log("ss");
+        state.exam = {
+            classId: "",
+            examDate: {
+                timeAndDate: new Date(),
+                duration: ""
+            },
+            questions: [
+                {
+                    type: "OBJECTIVE",
+                    question: "",
+                    options: [
+                        {
+                            option: "",
+                            answer: false
+                        },
+                        {
+                            option: "",
+                            answer: false
+                        },
+                        {
+                            option: "",
+                            answer: false
+                        },
+                        {
+                            option: "",
+                            answer: false
+                        }
+                    ]
+                }
+            ]
+        }
+        state.questionIndex = 0;
     }
 };
 
 export const actions: ActionTree<ExamStateTypes, IRootState> &
     ExamActionsTypes = {
+    async [ActionTypes.SET_EXAMS]({ commit, state }) {
+        const { data } = await axios.post<{msg: string}>(
+            "/api/exams/set-exams",
+            state.exam,
+            {
+                headers: {
+                    authorization: localStorage.getItem("token") || "",
+                },
+            }
+        );
 
+        alert(data.msg);
+        commit(MutationTypes.RESET_QUESTIONS, undefined);
+    }
 };
 
 export type ExamStoreModuleTypes<S = ExamStateTypes> = Omit<

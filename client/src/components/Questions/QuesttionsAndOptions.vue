@@ -7,22 +7,22 @@
         </div>
         <section class="QAws">
             <label for="rads1">
-                <input type="radio" id="rads1" name="option" value="option_1" v-model="answer" />
+                <input type="radio" id="rads1" value="option_1" v-model="answer" />
                 <input type="text" v-model="currentQuestion.options[0].option">
             </label>
 
             <label for="rads2">
-                <input type="radio" id="rads2" name="option" value="option_2" v-model="answer" />
+                <input type="radio" id="rads2" value="option_2" v-model="answer" />
                 <input type="text" v-model="currentQuestion.options[1].option">
             </label>
 
             <label for="rads3">
-                <input type="radio" id="rads3" name="option" value="option_3" v-model="answer" />
+                <input type="radio" id="rads3" value="option_3" v-model="answer" />
                 <input type="text" v-model="currentQuestion.options[2].option">
             </label>
 
             <label for="rads4">
-                <input type="radio" id="rads4" name="option" value="option_4" v-model="answer" />
+                <input type="radio" id="rads4" value="option_4" v-model="answer" />
                 <input type="text" v-model="currentQuestion.options[3].option">
             </label>
         </section>
@@ -36,11 +36,18 @@ import { MutationTypes } from "../../store/exam";
 import { optionType } from "../../store/examInterface";
 
 const store = useStoreExam();
-
 const answer = ref<optionType>("");
 
 const questions = store.getters.getExamQuestions;
 const currentQuestion = computed(() => questions[store.getters.getCurrentQuestion]);
+const pickedAnswer = computed(() => {
+    if (currentQuestion.value.options[0].answer) return "option_1";
+    if (currentQuestion.value.options[1].answer) return "option_2";
+    if (currentQuestion.value.options[2].answer) return "option_3";
+    if (currentQuestion.value.options[3].answer) return "option_4";
+
+    return "";
+});
 
 const changeQuestion = (type: string) => {
     const hightestIndex = questions.length - 1;
@@ -57,6 +64,10 @@ const changeQuestion = (type: string) => {
 
     store.commit(MutationTypes.SET_CURRENT_QUESTION, nextIndex);
 }
+
+watch(pickedAnswer, (_new) => {
+    answer.value = _new;
+});
 
 watch(answer, (ans) => {
     store.commit(MutationTypes.UPDATE_ANSWER, ans);

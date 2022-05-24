@@ -2,7 +2,7 @@ import { ActionContext } from "vuex";
 import { MutationTypes as ExamMTypes } from "./exam";
 import { ActionTypes as ExamATypes } from "./exam";
 import { IRootState } from "./interface";
-import ExamInterface from "../../../server/global/ExamInterface";
+import ExamInterface from "../../../server/interfaces/ExamInterface";
 
 export type optionType = "" | "option_1" | "option_2" | "option_3" | "option_4";
 
@@ -21,10 +21,11 @@ export interface ExamGettersTypes {
 }
 
 export type ExamMutationsTypes<S = ExamStateTypes> = {
-  [ExamMTypes.ADD_QUESTION](state: S):void;
+  [ExamMTypes.ADD_QUESTION](state: S): void;
   [ExamMTypes.SET_CURRENT_QUESTION](state: S, payload: number): void
   [ExamMTypes.UPDATE_ANSWER](state: S, payload: optionType): void;
   [ExamMTypes.SET_CLASS_ID](state: S, payload: ExamStateTypes["exam"]["classId"]): void;
+  [ExamMTypes.RESET_QUESTIONS](state: S): void;
 };
 
 export type AugmentedActionContext = {
@@ -35,5 +36,5 @@ export type AugmentedActionContext = {
 } & Omit<ActionContext<ExamStateTypes, IRootState>, "commit">;
 
 export interface ExamActionsTypes {
-  
+  [ExamATypes.SET_EXAMS]({commit, state}: AugmentedActionContext): void;
 }

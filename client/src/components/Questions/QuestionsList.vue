@@ -6,7 +6,12 @@
                 <span>{{`${currentIndex + 1}/${questions.length}`}}</span>
             </div>
             <ul>
-                <li :class="{active: index === currentIndex}" v-for="(question, index) in questions" :key="index" @click="setCurrentQuestion(index)">
+                <li 
+                    :class="{active: index === currentIndex}" 
+                    v-for="(question, index) in questions"
+                    :key="index"
+                    @click="setCurrentQuestion(index)"
+                >
                     {{`Question ${index + 1}`}}
                 </li>
                 <li @click="addQuestion">
@@ -18,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useStoreExam } from "../../store";
 import { MutationTypes } from "../../store/exam";
 
