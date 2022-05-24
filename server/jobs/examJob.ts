@@ -1,7 +1,9 @@
 import { Job } from "agenda";
 import mongoose from "mongoose";
 import { agenda } from "../app";
+import classModel from "../model/adminModels";
 import examModel from "../model/examModel";
+import { examsStartNotificaion } from "../socket";
 
 export const scheduleExams = async (examsDate: Date, examDuration: string, examsID: mongoose.Types.ObjectId) => {
     await agenda.schedule(examsDate, "start-exam", { examsDate, examsID, examDuration });
@@ -24,9 +26,11 @@ const stopExams = async (examsDate: Date, examDuration: string, examsID: mongoos
 
 const examJobs = () => {
     agenda.define("start-exam", async (job: Job) => {
-        await examModel.findOneAndUpdate({ _id: job.attrs.data?.examsID }, { examStart: true });
+        const exams = await examModel.findOneAndUpdate({ _id: job.attrs.data?.examsID }, { examStart: true });
         job.remove();
         stopExams(job.attrs.data?.examsDate, job.attrs.data?.examDuration, job.attrs.data?.examsID);
+        const _class = await classModel.findOne({_id: exams?.exam.classId});
+            examsStartNotificaion(`${_class?.name} Exams have started`);
     });
 
     agenda.define("stop-exam", async (job: Job) => {

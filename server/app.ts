@@ -1,4 +1,5 @@
 import path from "path";
+import http from "http";
 import express from "express";
 import mongoose from "mongoose";
 import Agenda from "agenda";
@@ -7,6 +8,7 @@ import authApi from "./api/auth";
 import adminApi from "./api/admin";
 import examApi from "./api/exams";
 import examJobs from "./jobs/examJob";
+import initWebSocket from "./socket";
 
 mongoose.Promise = global.Promise;
 
@@ -21,6 +23,9 @@ examJobs();
 agenda.start();
 
 const app = express();
+const server = http.createServer(app);
+
+initWebSocket(server);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
@@ -32,8 +37,8 @@ app.get("*", (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-const port = 3001;
+const port = process.env.PORT || 3001;
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
