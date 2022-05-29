@@ -21,6 +21,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/studentsLogin/exam.vue"),
     meta: {
       title: "Exams",
+      startExams: true
     },
   },
   {
@@ -122,6 +123,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !store.getters.isLoggedIn) next({name: "AdminLogin"});
+  else if (to.meta.startExams && !store.getters.getExamStatus) next({name: "Students_login"});
   else next();
 });
 

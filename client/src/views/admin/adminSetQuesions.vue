@@ -28,6 +28,7 @@
             <label for="exam-duration">Exam Duration</label>
             <select id="exam-duration" v-model="examTime.duration">
               <option value="" disabled>--Select Exam's Duration--</option>
+              <option value="1-m">1 Minute</option>
               <option value="30-m">30 Minutes</option>
               <option value="1-h">1 Hour</option>
               <option value="2-h">2 Hour</option>

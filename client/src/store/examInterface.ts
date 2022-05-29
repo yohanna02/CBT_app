@@ -9,7 +9,10 @@ export type optionType = "" | "option_1" | "option_2" | "option_3" | "option_4";
 export interface ExamStateTypes {
   rootDispatch?: boolean;
   questionIndex: number;
+  examId: string;
+  examEndTime: Date;
   exam: ExamInterface;
+  startExams: boolean;
 }
 
 export interface ExamGettersTypes {
@@ -18,6 +21,8 @@ export interface ExamGettersTypes {
   getDateAndTime(state: ExamStateTypes): ExamStateTypes["exam"]["examDate"];
   getClassId(state: ExamStateTypes): ExamStateTypes["exam"]["classId"];
   getExams(state: ExamStateTypes): ExamStateTypes["exam"];
+  getExamStatus(state: ExamStateTypes): ExamStateTypes["startExams"];
+  getExamEndTime(state: ExamStateTypes): ExamStateTypes["examEndTime"];
 }
 
 export type ExamMutationsTypes<S = ExamStateTypes> = {
@@ -26,6 +31,7 @@ export type ExamMutationsTypes<S = ExamStateTypes> = {
   [ExamMTypes.UPDATE_ANSWER](state: S, payload: optionType): void;
   [ExamMTypes.SET_CLASS_ID](state: S, payload: ExamStateTypes["exam"]["classId"]): void;
   [ExamMTypes.RESET_QUESTIONS](state: S): void;
+  [ExamMTypes.SET_EXAM_STATUS](state: S, payload: boolean): void;
 };
 
 export type AugmentedActionContext = {
@@ -35,6 +41,12 @@ export type AugmentedActionContext = {
   ): ReturnType<ExamMutationsTypes[K]>;
 } & Omit<ActionContext<ExamStateTypes, IRootState>, "commit">;
 
+export interface StudentInfo {
+  regNo: string;
+  classId: string;
+}
+
 export interface ExamActionsTypes {
   [ExamATypes.SET_EXAMS]({commit, state}: AugmentedActionContext): void;
+  [ExamATypes.START_EXAMS]({commit, state}: AugmentedActionContext, payload: StudentInfo): void;
 }

@@ -20,6 +20,8 @@ import { IRootState } from "./interface";
 
 export const state: ExamStateTypes = {
     questionIndex: 0,
+    examId: "",
+    examEndTime: new Date(),
     exam: {
         classId: "",
         examDate: {
@@ -50,12 +52,14 @@ export const state: ExamStateTypes = {
                 ]
             }
         ]
-    }
+    },
+    startExams: false
 };
 
 // store/modules/counter/action-types.ts
 export enum ActionTypes {
-    SET_EXAMS = "SET_EXAMS"
+    SET_EXAMS = "SET_EXAMS",
+    START_EXAMS = "START_EXAMS"
 };
 
 // store/modules/counter/mutation-types.ts
@@ -64,7 +68,8 @@ export enum MutationTypes {
     SET_CURRENT_QUESTION = "SET_CURRENT_QUESTION",
     UPDATE_ANSWER = "UPDATE_ANSWER",
     SET_CLASS_ID = "SET_CLASS_ID",
-    RESET_QUESTIONS = "RESET_QUESTIONS"
+    RESET_QUESTIONS = "RESET_QUESTIONS",
+    SET_EXAM_STATUS = "SET_EXAM_STATUS"
 };
 
 export const getters: GetterTree<ExamStateTypes, IRootState> &
@@ -83,6 +88,12 @@ export const getters: GetterTree<ExamStateTypes, IRootState> &
     },
     getExams: (state: ExamStateTypes) => {
         return state.exam;
+    },
+    getExamStatus: (state: ExamStateTypes) => {
+        return state.startExams;
+    },
+    getExamEndTime: (state: ExamStateTypes) => {
+        return state.examEndTime;
     }
 };
 
@@ -176,13 +187,16 @@ export const mutations: MutationTree<ExamStateTypes> & ExamMutationsTypes = {
             ]
         }
         state.questionIndex = 0;
+    },
+    [MutationTypes.SET_EXAM_STATUS](state: ExamStateTypes, payload: boolean) {
+        state.startExams = payload;
     }
 };
 
 export const actions: ActionTree<ExamStateTypes, IRootState> &
     ExamActionsTypes = {
     async [ActionTypes.SET_EXAMS]({ commit, state }) {
-        const { data } = await axios.post<{msg: string}>(
+        const { data } = await axios.post<{ msg: string }>(
             "/api/exams/set-exams",
             state.exam,
             {
@@ -194,6 +208,19 @@ export const actions: ActionTree<ExamStateTypes, IRootState> &
 
         alert(data.msg);
         commit(MutationTypes.RESET_QUESTIONS, undefined);
+        state.exam
+    },
+    async [ActionTypes.START_EXAMS]({ commit, state }, { regNo, classId }) {
+        const { data } = await axios.post("/api/exams/start-exams", {
+            regNo,
+            classId
+        });
+
+        console.log(data);
+        commit(MutationTypes.SET_EXAM_STATUS, true);
+        state.exam = data.exams;
+        state.examId = data._id;
+        state.examEndTime = new Date(data.examEndTime);
     }
 };
 

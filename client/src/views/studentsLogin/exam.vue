@@ -1,11 +1,7 @@
 <template>
     <div class="container">
         <!-- <section class="container"> -->
-        <div class="timer">
-            <span class="hours">01</span>:
-            <span class="minuts">10</span>:
-            <span class="secs">52</span>
-        </div>
+        <Timer />
         <div class="wrapper">
             <div class="first">
                 <textarea class="Qframe" disabled></textarea>
@@ -100,25 +96,15 @@
         <!-- </section> -->
     </div>
 </template>
+
+<script setup lang="ts">
+import Timer from '../../components/Timer.vue';
+</script>
+
 <style lang="scss" scoped>
 // @use "../../assets/styles/abstracts" as *;
 // @use "../../assets/styles/resets" as *;
 // @use "../../assets/styles/mixins" as *;
-
-.timer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: $PrimaryRed;
-    span {
-        // background: brown;
-        display: inline-block;
-        padding: 0.5rem;
-        margin: 0.5rem;
-        font-weight: bold;
-        box-shadow: 0.5px 0.5px 5px $primaryGray;
-    }
-}
 .wrapper {
     width: 100%;
     min-height: fit-content !important;

@@ -2,10 +2,22 @@ import mongoose from "mongoose";
 
 import ExamInterface from "../interfaces/ExamInterface";
 
-interface Exam {
-    exam: ExamInterface,
-    examStart: false
+interface examStudent {
+    regNo: string;
+    examTimeOver: boolean;
+    examEndTime: Date;
 }
+interface Exam {
+    exam: ExamInterface;
+    examStart: false;
+    students: examStudent[];
+}
+
+const examStudentSchema = new mongoose.Schema<examStudent>({
+    regNo: String,
+    examTimeOver: Boolean,
+    examEndTime: mongoose.Schema.Types.Date
+});
 
 const examSchema = new mongoose.Schema<Exam>({
     exam: {
@@ -34,7 +46,7 @@ const examSchema = new mongoose.Schema<Exam>({
                     required: true
                 },
                 options: [
-                    
+
                 ]
             }
         ]
@@ -42,7 +54,10 @@ const examSchema = new mongoose.Schema<Exam>({
     examStart: {
         type: Boolean,
         default: false
-    }
+    },
+    students: [
+        examStudentSchema
+    ]
 });
 
 const examModel = mongoose.model<Exam>("exam", examSchema);

@@ -2,6 +2,7 @@
   <div class="container">
     <div class="wrapper">
       <h1>Take Exams</h1>
+      <p class="error">{{ errorMsg }}</p>
       <form @submit.prevent="takeExams">
         <input
           type="text"
@@ -10,9 +11,7 @@
         />
         <div>
           <select v-model="classId">
-            <option value="" disabled selected>
-              {{ loading ? "Loading..." : "--Select class--" }}
-            </option>
+            <option value="" disabled selected>--Select class--</option>
             <option
               v-for="_class in classList"
               :key="_class._id"
@@ -22,22 +21,28 @@
             </option>
           </select>
         </div>
-        <button type="submit">TAKE EXAMS</button>
+        <button type="submit" :disabled="loading">
+          {{ loading ? "Loading..." : "TAKE EXAMS" }}
+        </button>
       </form>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import { useRoute } from "vue-router";
-import { useStore } from "../../store";
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useStore, useStoreExam } from "../../store";
 import { ActionTypes } from "../../store/admin";
+import { ActionTypes as ExamActionTypes } from "../../store/exam";
 import { notification } from "../../utils/notifications";
 
 const store = useStore();
-const route = useRoute();
+const examStore = useStoreExam();
 
+const router = useRouter();
+
+const errorMsg = ref("");
 const classId = ref("");
 const regNo = ref("");
 const loading = ref(false);
@@ -45,7 +50,23 @@ let socket: WebSocket;
 
 const classList = computed(() => store.getters.getClasses);
 
-const takeExams = () => {};
+const takeExams = async () => {
+  try {
+    loading.value = true;
+    errorMsg.value = "";
+    await examStore.dispatch(ExamActionTypes.START_EXAMS, {
+      regNo: regNo.value,
+      classId: classId.value,
+    });
+    loading.value = false;
+
+    router.push({ name: "Students_exam" });
+  } catch (error: any) {
+    loading.value = false;
+    errorMsg.value = error.response.data.msg;
+    console.log(error.response);
+  }
+};
 
 onMounted(async () => {
   socket = new WebSocket("ws://localhost:3001/");
@@ -57,7 +78,7 @@ onMounted(async () => {
     const parsedData = JSON.parse(data) as { event: string; data: any };
 
     if (parsedData.event === "exam-start") {
-        notification(parsedData.data);
+      notification(parsedData.data);
     }
   };
 
@@ -65,9 +86,7 @@ onMounted(async () => {
     alert("Websocket error");
   };
 
-  loading.value = true;
   await store.dispatch(ActionTypes.FETCH_CLASS_LIST);
-  loading.value = false;
 });
 </script>
 
@@ -83,6 +102,9 @@ onMounted(async () => {
   h1 {
     @include flex_fun(center, center);
     margin: 1rem 0;
+  }
+  .error {
+    color: $PrimaryRed;
   }
   form {
     width: 30%;

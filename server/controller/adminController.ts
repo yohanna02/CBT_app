@@ -47,7 +47,7 @@ export const deleteClass = async (req:Request, res: Response) => {
 
 export const addStudent = async (req: Request, res: Response) => {
   try {
-    const studentExist = await classModel.findOne({ students: { "$in" : [{regNo: req.body.regNo}]} });
+    const studentExist = await classModel.findOne({ students: {$elemMatch: {regNo: req.body.regNo} }});
     if (studentExist) return res.status(422).json({msg: "Registration Number already exist"});
 
     const classExist = await classModel.findOne({_id: req.body.class_id});
