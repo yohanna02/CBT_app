@@ -7,27 +7,33 @@
             </div>
             <ul>
                 <li 
-                    :class="{active: index === currentIndex}" 
+                    :class="{
+                        active: index === currentIndex,
+                        Answered: store.getters.getStudentAnswer[index]
+                    }" 
                     v-for="(question, index) in questions"
                     :key="index"
                     @click="setCurrentQuestion(index)"
                 >
                     {{`Question ${index + 1}`}}
                 </li>
-                <li @click="addQuestion">
+                <li @click="addQuestion" v-if="route.path === '/admin/adminquesions'">
                     <img src="../../assets/plus.svg" alt="..." />
                 </li>
             </ul>
+            <button v-if="route.path !== '/admin/adminquesions'" class="submit-btn">Submit</button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 import { useStoreExam } from "../../store";
 import { MutationTypes } from "../../store/exam";
 
 const store = useStoreExam();
+const route = useRoute();
 
 const questions = store.getters.getExamQuestions;
 
@@ -130,6 +136,21 @@ const addQuestion = () => {
                 //     color: $primaryGray;
                 // }
             }
+
+            .submit-btn {
+                background-color: $PrimaryRed;
+                border: none;
+                padding: .8rem 0;
+                color: white;
+                margin-bottom: .5rem;
+                border-radius: 6px;
+                cursor: pointer;
+                width: 100%;
+
+                &:hover {
+                    background-color: darken($PrimaryRed, 10%);
+                }
+            }
         }
     }
     @include mediaQuery_max_width(999px) {
@@ -145,6 +166,16 @@ const addQuestion = () => {
                 }
             }
         }
+    }
+}
+
+.Answered {
+    background: $primaryGreen;
+    a {
+        color: $PrimaryWhite !important;
+    }
+    &:hover {
+        background: darken($color: $primaryGreen, $amount: 15);
     }
 }
 </style>

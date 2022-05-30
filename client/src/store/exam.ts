@@ -22,6 +22,7 @@ export const state: ExamStateTypes = {
     questionIndex: 0,
     examId: "",
     examEndTime: new Date(),
+    studentAnswers: [],
     exam: {
         classId: "",
         examDate: {
@@ -69,7 +70,8 @@ export enum MutationTypes {
     UPDATE_ANSWER = "UPDATE_ANSWER",
     SET_CLASS_ID = "SET_CLASS_ID",
     RESET_QUESTIONS = "RESET_QUESTIONS",
-    SET_EXAM_STATUS = "SET_EXAM_STATUS"
+    SET_EXAM_STATUS = "SET_EXAM_STATUS",
+    UPDATE_PICKED_ANSWER = "UPDATE_PICKED_ANSWER"
 };
 
 export const getters: GetterTree<ExamStateTypes, IRootState> &
@@ -94,6 +96,9 @@ export const getters: GetterTree<ExamStateTypes, IRootState> &
     },
     getExamEndTime: (state: ExamStateTypes) => {
         return state.examEndTime;
+    },
+    getStudentAnswer: (state: ExamStateTypes) => {
+        return state.studentAnswers;
     }
 };
 
@@ -190,6 +195,10 @@ export const mutations: MutationTree<ExamStateTypes> & ExamMutationsTypes = {
     },
     [MutationTypes.SET_EXAM_STATUS](state: ExamStateTypes, payload: boolean) {
         state.startExams = payload;
+    },
+    [MutationTypes.UPDATE_PICKED_ANSWER](state: ExamStateTypes, payload: string){
+
+        state.studentAnswers[state.questionIndex] = payload;
     }
 };
 

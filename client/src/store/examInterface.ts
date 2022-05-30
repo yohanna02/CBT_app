@@ -11,6 +11,7 @@ export interface ExamStateTypes {
   questionIndex: number;
   examId: string;
   examEndTime: Date;
+  studentAnswers: string[];
   exam: ExamInterface;
   startExams: boolean;
 }
@@ -23,6 +24,7 @@ export interface ExamGettersTypes {
   getExams(state: ExamStateTypes): ExamStateTypes["exam"];
   getExamStatus(state: ExamStateTypes): ExamStateTypes["startExams"];
   getExamEndTime(state: ExamStateTypes): ExamStateTypes["examEndTime"];
+  getStudentAnswer(state: ExamStateTypes): ExamStateTypes["studentAnswers"];
 }
 
 export type ExamMutationsTypes<S = ExamStateTypes> = {
@@ -32,6 +34,7 @@ export type ExamMutationsTypes<S = ExamStateTypes> = {
   [ExamMTypes.SET_CLASS_ID](state: S, payload: ExamStateTypes["exam"]["classId"]): void;
   [ExamMTypes.RESET_QUESTIONS](state: S): void;
   [ExamMTypes.SET_EXAM_STATUS](state: S, payload: boolean): void;
+  [ExamMTypes.UPDATE_PICKED_ANSWER](state: S, payload: string): void;
 };
 
 export type AugmentedActionContext = {

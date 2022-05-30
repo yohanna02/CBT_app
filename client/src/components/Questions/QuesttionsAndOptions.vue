@@ -1,10 +1,7 @@
 <template>
     <div class="first">
         <textarea class="Qframe" v-model="currentQuestion.question"></textarea>
-        <div class="next_pre">
-            <button class="pre" @click="changeQuestion('prev')">Pre</button>
-            <button class="next" @click="changeQuestion('next')">Next</button>
-        </div>
+        <SwitchBtn />
         <section class="QAws">
             <label for="rads1">
                 <input type="radio" id="rads1" value="option_1" v-model="answer" />
@@ -35,6 +32,8 @@ import { useStoreExam } from "../../store"
 import { MutationTypes } from "../../store/exam";
 import { optionType } from "../../store/examInterface";
 
+import SwitchBtn from "./SwitchBtn.vue";
+
 const store = useStoreExam();
 const answer = ref<optionType>("");
 
@@ -48,22 +47,6 @@ const pickedAnswer = computed(() => {
 
     return "";
 });
-
-const changeQuestion = (type: string) => {
-    const hightestIndex = questions.length - 1;
-    if (type === "next") {
-        const nextIndex = store.getters.getCurrentQuestion + 1;
-        if (nextIndex > hightestIndex) return;
-
-        store.commit(MutationTypes.SET_CURRENT_QUESTION, nextIndex);
-        return;
-    }
-
-    const nextIndex = store.getters.getCurrentQuestion - 1;
-    if (nextIndex < 0) return;
-
-    store.commit(MutationTypes.SET_CURRENT_QUESTION, nextIndex);
-}
 
 watch(pickedAnswer, (_new) => {
     answer.value = _new;
@@ -88,32 +71,7 @@ watch(answer, (ans) => {
         resize: none;
         padding: 2rem;
     }
-    .next_pre {
-        width: 100%;
-        @include flex_fun(row, space-between, center);
-
-        .pre,
-        .next {
-            @include btn_base_style;
-            padding: 1rem 2rem;
-            color: $PrimaryWhite;
-
-            &:hover {
-                background: darken($color: $primaryBlue, $amount: 15);
-            }
-        }
-        .next {
-            &:hover {
-                background: darken(
-                    $color: $primaryGreen,
-                    $amount: 15
-                ) !important;
-            }
-        }
-        .next {
-            background: $primaryGreen !important;
-        }
-    }
+    
     .QAws {
         width: 100%;
         height: auto;
