@@ -59,9 +59,9 @@
 </template>
 
 <script setup lang="ts">
+import VueFinalModal from "vue-final-modal";
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { VueFinalModal } from "vue-final-modal";
 import QuestionsAndOptions from "../../components/Questions/QuesttionsAndOptions.vue";
 import QuestionsList from "../../components/Questions/QuestionsList.vue";
 
