@@ -21,7 +21,13 @@
                     <img src="../../assets/plus.svg" alt="..." />
                 </li>
             </ul>
-            <button v-if="route.path !== '/admin/adminquesions'" class="submit-btn">Submit</button>
+            <button 
+                v-if="route.path !== '/admin/adminquesions'" 
+                class="submit-btn"
+                @click="submitExams"
+            >
+                Submit
+            </button>
         </div>
     </div>
 </template>
@@ -30,7 +36,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useStoreExam } from "../../store";
-import { MutationTypes } from "../../store/exam";
+import { MutationTypes, ActionTypes } from "../../store/exam";
 
 const store = useStoreExam();
 const route = useRoute();
@@ -45,6 +51,15 @@ const currentIndex = computed(() => store.getters.getCurrentQuestion);
 
 const addQuestion = () => {
     store.commit(MutationTypes.ADD_QUESTION);
+}
+
+const submitExams = () => {
+    try {
+        store.commit(MutationTypes.CHANGE_AUTO_SUBMIT, false);
+        store.dispatch(ActionTypes.SUBMIT_EXAMS);
+    } catch(error) {
+        console.error(error);
+    }
 }
 </script>
 

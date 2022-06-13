@@ -59,18 +59,38 @@
       <QuestionsList />
     </div>
     <!-- </section> -->
+    
+    <VueFinalModal
+      v-model="showModal"
+      classes="modal-container"
+      content-class="modal-content"
+    >
+      <button type="button" class="modal__close" @click="examLogout">
+        &times;
+      </button>
+      <span class="modal__title">Exams Result</span>
+      <div class="modal__content">
+        <p>Scored {{examResult.score}} out of {{examResult.totalQuestion}} questions.</p>
+      </div>
+      <div class="modal__action">
+        <button @click="examLogout">Exit Exam</button>
+      </div>
+    </VueFinalModal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, watch, ref } from "vue";
+import { useRouter } from "vue-router";
+import { VueFinalModal } from "vue-final-modal";
 import { useStoreExam } from "../../store";
+import { MutationTypes } from "../../store/exam";
 import Timer from "../../components/Timer.vue";
 import QuestionsList from "../../components/Questions/QuestionsList.vue";
 import SwitchBtn from "../../components/Questions/SwitchBtn.vue";
-import { MutationTypes } from "../../store/exam";
 
 const store = useStoreExam();
+const router = useRouter();
 
 const questions = store.getters.getExamQuestions;
 const currentQuestion = computed(
@@ -78,7 +98,18 @@ const currentQuestion = computed(
 );
 const questionIndex = computed(() => store.getters.getCurrentQuestion);
 
+const examStatus = computed(() => store.getters.getExamStatus);
+
+const examResult = computed(() => store.getters.getResults);
+
 const pickedAnswer = ref("");
+
+const showModal = ref(false);
+
+const examLogout = () => {
+  showModal.value = false;
+  router.push({name: "Students_login"});
+}
 
 watch(questionIndex, () => {
   pickedAnswer.value = store.getters.getStudentAnswer[questionIndex.value]
@@ -88,6 +119,12 @@ watch(questionIndex, () => {
 
 watch(pickedAnswer, (_new) => {
   store.commit(MutationTypes.UPDATE_PICKED_ANSWER, _new);
+});
+
+watch(examStatus, (_new) => {
+  if (!_new) {
+    showModal.value = true;
+  }
 });
 </script>
 
@@ -195,6 +232,67 @@ watch(pickedAnswer, (_new) => {
     section {
       margin-bottom: 1rem;
     }
+  }
+}
+
+:deep(.modal-container) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+:deep(.modal-content) {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 90%;
+  margin: 0 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  background: #fff;
+}
+
+.modal__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+
+  &:focus {
+    border: 1px black solid;
+    padding: 0.4rem;
+  }
+}
+.modal__title {
+  margin: 0 2rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.modal__content {
+  padding: 2rem;
+  flex-grow: 1;
+  overflow: auto;
+
+  p {
+    font-size: larger;
+  }
+}
+
+.modal__action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 1rem 0 0;
+  gap: 2rem;
+
+  button {
+    padding: 0.7rem;
+    @include btn_base_style($primaryGreen, $primaryBGColor);
   }
 }
 </style>

@@ -10,10 +10,16 @@ export interface ExamStateTypes {
   rootDispatch?: boolean;
   questionIndex: number;
   examId: string;
+  studentRegNo: string;
+  autoSubmit: boolean;
   examEndTime: Date;
   studentAnswers: string[];
   exam: ExamInterface;
   startExams: boolean;
+  result: {
+    score: number;
+    totalQuestion: number;
+  }
 }
 
 export interface ExamGettersTypes {
@@ -25,6 +31,7 @@ export interface ExamGettersTypes {
   getExamStatus(state: ExamStateTypes): ExamStateTypes["startExams"];
   getExamEndTime(state: ExamStateTypes): ExamStateTypes["examEndTime"];
   getStudentAnswer(state: ExamStateTypes): ExamStateTypes["studentAnswers"];
+  getResults(state: ExamStateTypes): ExamStateTypes["result"];
 }
 
 export type ExamMutationsTypes<S = ExamStateTypes> = {
@@ -35,6 +42,8 @@ export type ExamMutationsTypes<S = ExamStateTypes> = {
   [ExamMTypes.RESET_QUESTIONS](state: S): void;
   [ExamMTypes.SET_EXAM_STATUS](state: S, payload: boolean): void;
   [ExamMTypes.UPDATE_PICKED_ANSWER](state: S, payload: string): void;
+  [ExamMTypes.CHANGE_AUTO_SUBMIT](state: S, payload: boolean): void;
+  [ExamMTypes.SET_RESULT](state: S, payload: ExamStateTypes["result"]): void;
 };
 
 export type AugmentedActionContext = {
@@ -52,4 +61,5 @@ export interface StudentInfo {
 export interface ExamActionsTypes {
   [ExamATypes.SET_EXAMS]({commit, state}: AugmentedActionContext): void;
   [ExamATypes.START_EXAMS]({commit, state}: AugmentedActionContext, payload: StudentInfo): void;
+  [ExamATypes.SUBMIT_EXAMS]({commit, state}: AugmentedActionContext): void;
 }

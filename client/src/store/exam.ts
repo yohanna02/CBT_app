@@ -21,6 +21,8 @@ import { IRootState } from "./interface";
 export const state: ExamStateTypes = {
     questionIndex: 0,
     examId: "",
+    studentRegNo: "",
+    autoSubmit: false,
     examEndTime: new Date(),
     studentAnswers: [],
     exam: {
@@ -54,13 +56,18 @@ export const state: ExamStateTypes = {
             }
         ]
     },
-    startExams: false
+    startExams: false,
+    result:{
+        score: 0,
+        totalQuestion: 0
+    }
 };
 
 // store/modules/counter/action-types.ts
 export enum ActionTypes {
     SET_EXAMS = "SET_EXAMS",
-    START_EXAMS = "START_EXAMS"
+    START_EXAMS = "START_EXAMS",
+    SUBMIT_EXAMS = "SUBMIT_EXAMS"
 };
 
 // store/modules/counter/mutation-types.ts
@@ -71,39 +78,44 @@ export enum MutationTypes {
     SET_CLASS_ID = "SET_CLASS_ID",
     RESET_QUESTIONS = "RESET_QUESTIONS",
     SET_EXAM_STATUS = "SET_EXAM_STATUS",
-    UPDATE_PICKED_ANSWER = "UPDATE_PICKED_ANSWER"
+    UPDATE_PICKED_ANSWER = "UPDATE_PICKED_ANSWER",
+    CHANGE_AUTO_SUBMIT = "CHANGE_AUTO_SUBMIT",
+    SET_RESULT = "SET_RESULT"
 };
 
 export const getters: GetterTree<ExamStateTypes, IRootState> &
     ExamGettersTypes = {
-    getExamQuestions: (state: ExamStateTypes) => {
+    getExamQuestions: (state) => {
         return state.exam.questions;
     },
-    getCurrentQuestion: (state: ExamStateTypes) => {
+    getCurrentQuestion: (state) => {
         return state.questionIndex;
     },
-    getDateAndTime: (state: ExamStateTypes) => {
+    getDateAndTime: (state) => {
         return state.exam.examDate;
     },
-    getClassId: (state: ExamStateTypes) => {
+    getClassId: (state) => {
         return state.exam.classId;
     },
-    getExams: (state: ExamStateTypes) => {
+    getExams: (state) => {
         return state.exam;
     },
-    getExamStatus: (state: ExamStateTypes) => {
+    getExamStatus: (state) => {
         return state.startExams;
     },
-    getExamEndTime: (state: ExamStateTypes) => {
+    getExamEndTime: (state) => {
         return state.examEndTime;
     },
-    getStudentAnswer: (state: ExamStateTypes) => {
+    getStudentAnswer: (state) => {
         return state.studentAnswers;
+    },
+    getResults: (state) => {
+        return state.result;
     }
 };
 
 export const mutations: MutationTree<ExamStateTypes> & ExamMutationsTypes = {
-    [MutationTypes.ADD_QUESTION](state: ExamStateTypes) {
+    [MutationTypes.ADD_QUESTION](state) {
         const newLength = state.exam.questions.push({
             type: "OBJECTIVE",
             question: "",
@@ -129,10 +141,10 @@ export const mutations: MutationTree<ExamStateTypes> & ExamMutationsTypes = {
 
         state.questionIndex = newLength - 1;
     },
-    [MutationTypes.SET_CURRENT_QUESTION](state: ExamStateTypes, payload: number) {
+    [MutationTypes.SET_CURRENT_QUESTION](state, payload) {
         state.questionIndex = payload;
     },
-    [MutationTypes.UPDATE_ANSWER](state: ExamStateTypes, payload: optionType) {
+    [MutationTypes.UPDATE_ANSWER](state, payload) {
         if (payload === "option_1") {
             state.exam.questions[state.questionIndex].options[0].answer = true;
             state.exam.questions[state.questionIndex].options[1].answer = false;
@@ -155,10 +167,10 @@ export const mutations: MutationTree<ExamStateTypes> & ExamMutationsTypes = {
             state.exam.questions[state.questionIndex].options[3].answer = true;
         }
     },
-    [MutationTypes.SET_CLASS_ID](state: ExamStateTypes, payload: ExamStateTypes["exam"]["classId"]) {
+    [MutationTypes.SET_CLASS_ID](state, payload) {
         state.exam.classId = payload;
     },
-    [MutationTypes.RESET_QUESTIONS](state: ExamStateTypes) {
+    [MutationTypes.RESET_QUESTIONS](state) {
         // console.log("ss");
         state.exam = {
             classId: "",
@@ -193,12 +205,18 @@ export const mutations: MutationTree<ExamStateTypes> & ExamMutationsTypes = {
         }
         state.questionIndex = 0;
     },
-    [MutationTypes.SET_EXAM_STATUS](state: ExamStateTypes, payload: boolean) {
+    [MutationTypes.SET_EXAM_STATUS](state, payload) {
         state.startExams = payload;
     },
-    [MutationTypes.UPDATE_PICKED_ANSWER](state: ExamStateTypes, payload: string){
+    [MutationTypes.UPDATE_PICKED_ANSWER](state, payload){
 
         state.studentAnswers[state.questionIndex] = payload;
+    },
+    [MutationTypes.CHANGE_AUTO_SUBMIT](state, payload) {
+        state.autoSubmit = payload;
+    },
+    [MutationTypes.SET_RESULT](state, payload) {
+        state.result = { ...payload };
     }
 };
 
@@ -230,6 +248,24 @@ export const actions: ActionTree<ExamStateTypes, IRootState> &
         state.exam = data.exams;
         state.examId = data._id;
         state.examEndTime = new Date(data.examEndTime);
+        state.studentRegNo = regNo;
+    },
+    async [ActionTypes.SUBMIT_EXAMS]({commit, state: { studentRegNo, examId, studentAnswers, autoSubmit }}) {
+        const { data } = await axios.post<{status: string, scores: number, totalQuestion: number}>("/api/exams/submit-exams", {
+            examId,
+            studentRegNo,
+            studentAnswers,
+            autoSubmit
+        });
+
+        console.log(data);
+
+        commit(MutationTypes.SET_RESULT, {
+            score: data.scores,
+            totalQuestion: data.totalQuestion
+        });
+
+        commit(MutationTypes.SET_EXAM_STATUS, false);
     }
 };
 

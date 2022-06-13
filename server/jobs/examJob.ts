@@ -38,6 +38,15 @@ export const scheduleStudentExamStopTime = async (examsId: mongoose.Types.Object
     return examStopTime;
 }
 
+export const getStudentExamsJob = async (examsId: mongoose.Types.ObjectId, regNo: string) => {
+    const job = await agenda.jobs(
+        { name: "stop-student-exams" },
+        { data: -1 }
+    );
+
+    return job;
+}
+
 const examJobs = () => {
     agenda.define("start-exam", async (job: Job) => {
         const exams = await examModel.findOneAndUpdate({ _id: job.attrs.data?.examsID }, { examStart: true });

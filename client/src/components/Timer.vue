@@ -7,8 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useStoreExam } from "../store";
+import { MutationTypes, ActionTypes } from "../store/exam";
 
 const examStore = useStoreExam();
 
@@ -23,14 +24,28 @@ const _days = computed(() => _hours.value * 24);
 
 const examEndTime = computed(() => examStore.getters.getExamEndTime.getTime());
 
+const examStatus = computed(() => examStore.getters.getExamStatus);
+
+let timer: NodeJS.Timer;
+
+const submitExams = () => {
+    try {
+        examStore.commit(MutationTypes.CHANGE_AUTO_SUBMIT, true);
+        examStore.dispatch(ActionTypes.SUBMIT_EXAMS);
+    } catch(error) {
+        console.error(error);
+    }
+}
+
 const formatNum = (num: number) => (num < 10 ? `0${num}` : `${num}`);
 
 const showRemaining = () => {
-    const timer = setInterval(() => {
+    timer = setInterval(() => {
         const now = new Date();
         const distance = examEndTime.value - now.getTime();
 
         if (distance < 0) {
+            submitExams();
             clearInterval(timer);
             return;
         }
@@ -44,6 +59,12 @@ const showRemaining = () => {
         displaySeconds.value = formatNum(seconds);
     }, 1000);
 }
+
+watch(examStatus, (_new) => {
+    if (!_new) {
+        clearInterval(timer);
+    }
+});
 
 onMounted(() => {
     showRemaining();
