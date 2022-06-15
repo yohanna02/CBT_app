@@ -94,6 +94,13 @@ onMounted(async () => {
 // @use "../../assets/styles/abstracts" as *;
 // @use "../../assets/styles/resets" as *;
 // @use "../../assets/styles/mixins" as *;
+
+.container {
+  background-image: url("../../assets/student-img.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .wrapper {
   width: $width;
   height: 100vh;
@@ -107,6 +114,8 @@ onMounted(async () => {
     color: $PrimaryRed;
   }
   form {
+    background-color: $PrimaryWhite;
+    padding: 2rem;
     width: 30%;
     @include flex_fun(column, space-between, center);
 

@@ -4,6 +4,7 @@ import { agenda } from "../app";
 import classModel from "../model/adminModels";
 import examModel from "../model/examModel";
 import { examsStartNotificaion } from "../socket";
+import classResultModel from "../model/resultModel";
 
 export const scheduleExams = async (examsDate: Date, examDuration: string, examsID: mongoose.Types.ObjectId) => {
     await agenda.schedule(examsDate, "start-exam", { examsDate, examsID, examDuration });
@@ -57,8 +58,32 @@ const examJobs = () => {
     });
 
     agenda.define("stop-exam", async (job: Job) => {
-        await examModel.findOneAndUpdate({ _id: job.attrs.data?.examsID }, { examStart: false });
-        job.remove();
+        const deletedExams = await examModel.findOneAndDelete({ _id: job.attrs.data?.examsID });
+        await job.remove();
+
+        if (deletedExams) {
+            const classResults = await classResultModel.findOne({classId: deletedExams.exam.classId});
+            const classStudents = await classModel.findById(deletedExams.exam.classId);
+
+            if (classStudents && classResults) {
+                setTimeout(() => {
+                    const absentstudents = classStudents.students.filter(student => {
+                        return deletedExams.students.filter(studentA => {
+                            return student.regNo === studentA.regNo
+                        }).length === 0;
+                    });
+
+                    const missedExamStudent = absentstudents.map(student => {
+                        return student.regNo
+                    });
+
+                    console.log(absentstudents);
+
+                    classResults.missedExam = [ ...missedExamStudent ];
+                    classResults.save();
+                }, 10000);
+            }
+        }
     });
 
     agenda.define("stop-student-exams", async (job: Job) => {

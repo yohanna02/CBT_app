@@ -7,6 +7,7 @@ import Agenda from "agenda";
 import authApi from "./api/auth";
 import adminApi from "./api/admin";
 import examApi from "./api/exams";
+import resultApi from "./api/examResults";
 import examJobs from "./jobs/examJob";
 import initWebSocket from "./socket";
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use("/api/auth", authApi);
 app.use("/api/admin", adminApi);
 app.use("/api/exams", examApi);
+app.use("/api/result", resultApi);
 
 app.get("*", (req, res) => {
     res.sendFile(__dirname + '/public/index.html');

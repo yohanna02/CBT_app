@@ -72,6 +72,8 @@ const login = async () => {
 
 <style lang="scss" scoped>
 form {
+  background-color: $PrimaryWhite;
+  padding: 2rem;
   width: 30%;
   @include flex_fun(column, space-between, center);
 

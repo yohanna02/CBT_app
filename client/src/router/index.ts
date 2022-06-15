@@ -1,3 +1,4 @@
+import path from "path";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { store } from "../store/index";
 
@@ -49,7 +50,6 @@ const routes: Array<RouteRecordRaw> = [
           title: "Admin Login",
         },
       },
-
       {
         path: "addclass",
         name: "addClass",
@@ -83,17 +83,35 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/admin/classList.vue"),
         meta: {
           title: "Admin class list",
-          // requiresAuth: true
+          requiresAuth: true
         },
       },
       {
-        path: "studentlists",
-        name: "studentLists",
-        component: () => import("../views/admin/studentLists.vue"),
+        path: "examResult",
+        name: "examResult",
+        component: () => import("../views/admin/examResult.vue"),
         meta: {
-          title: "student Lists",
-          // requiresAuth: true
-        },
+          title: "Exam Result",
+          requiresAuth: true
+        }
+      },
+      {
+        path: "examResult/:studentResultList",
+        name: "studentResultList",
+        component: () => import("../views/admin/studentResult.vue"),
+        meta: {
+          title: "Student Result",
+          requiresAuth: true
+        }
+      },
+      {
+        path: "examResult/:studentResultList/:regNo",
+        name: "studentResult",
+        component: () => import("../views/admin/singleStudentResult.vue"),
+        meta: {
+          title: "Single student Result",
+          requiresAuth: true
+        }
       },
       {
         path: "adminquesions",

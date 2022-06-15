@@ -30,7 +30,8 @@ const resultSchema = new mongoose.Schema<StudentResult>({
 const classResult = new mongoose.Schema<ClassResult>({
     classId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: "class"
     },
     results: [
         resultSchema
