@@ -15,6 +15,13 @@ import AuthForm from "../../components/AuthForm.vue";
 // @use "../../assets/styles/abstracts" as *;
 // @use "../../assets/styles/resets" as *;
 // @use "../../assets/styles/mixins" as *;
+.container {
+  background-image: url("../../assets/school-gate.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .wrapper {
   width: $width;
   height: 80vh;
@@ -22,6 +29,7 @@ import AuthForm from "../../components/AuthForm.vue";
   @include flex_fun(column, center, center);
   h1 {
     @include flex_fun(center, center);
+    // color: $PrimaryWhite;
     margin: 1rem 0;
     text-transform: uppercase;
   }

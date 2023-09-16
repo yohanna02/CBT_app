@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+     - '27017:27017'
+    volumes:
+      - ./mongo_db:/data/db
+  cbt_server:
+    # image: yohana02/cbt_app_cbt_server
+    build: ./server
+    container_name: cbt_server_c1
+    depends_on:
+      - mongodb
+  cbt_client:
+    # image: yohana02/cbt_app_cbt_client
+    build: ./client
+    container_name: cbt_client_c1
+    ports:
+      - '3000:3000'
+    depends_on:
+      - cbt_server
+volumes:
+  mongodb: {}
